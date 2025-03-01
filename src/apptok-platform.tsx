@@ -1225,8 +1225,8 @@ const AppTokPlatform = () => {
   const [aiPrompt, setAIPrompt] = useState('');
   const [aiLoading, setAILoading] = useState(false);
   
-  const appContainerRef = useRef(null);
-  const feedContainerRef = useRef(null);
+  const appContainerRef = useRef<HTMLDivElement>(null);
+  const feedContainerRef = useRef<HTMLDivElement>(null);
   
   const currentApp = apps[currentAppIndex];
   
@@ -1345,9 +1345,8 @@ const AppTokPlatform = () => {
     }, 2000); // 2秒後に「生成完了」
   };
   
-  // スクロールイベントのハンドリング
   useEffect(() => {
-    const handleScroll = (e) => {
+    const handleScroll = (e: WheelEvent) => {
       if (activeSection === 'feed' && feedContainerRef.current) {
         const delta = e.deltaY;
         if (delta > 0) {
@@ -1366,7 +1365,7 @@ const AppTokPlatform = () => {
   
   // キーボードナビゲーション
   useEffect(() => {
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       if (activeSection === 'feed') {
         if (e.key === 'ArrowDown' || e.key === 'j') {
           goToNextApp();
@@ -1384,28 +1383,34 @@ const AppTokPlatform = () => {
     };
   }, [activeSection, currentAppIndex, isAppRunning]);
   
-  // アプリのiframeでのレンダリング
-  useEffect(() => {
-    if (appContainerRef.current && isAppRunning) {
-      // iframeをクリアして新しいコンテンツを挿入
-      const iframe = document.createElement('iframe');
-      iframe.style.width = '100%';
-      iframe.style.height = '100%';
-      iframe.style.border = 'none';
-      iframe.sandbox = 'allow-scripts allow-same-origin';
-      
-      appContainerRef.current.innerHTML = '';
-      appContainerRef.current.appendChild(iframe);
-      
-      // iframeのコンテンツを設定
-      setTimeout(() => {
-        const doc = iframe.contentDocument || iframe.contentWindow.document;
-        doc.open();
-        doc.write(currentApp.html);
-        doc.close();
-      }, 0);
-    }
-  }, [currentApp, isAppRunning]);
+    // アプリのiframeでのレンダリング
+    useEffect(() => {
+      if (appContainerRef.current && isAppRunning) {
+        // iframeをクリアして新しいコンテンツを挿入
+        const iframe = document.createElement('iframe');
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        iframe.style.border = 'none';
+        iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+        
+        if (appContainerRef.current) {
+          appContainerRef.current.innerHTML = '';
+          appContainerRef.current.appendChild(iframe);
+        }
+        
+        // iframeのコンテンツを設定
+        setTimeout(() => {
+          const contentWindow = iframe.contentWindow;
+          if (contentWindow) {
+            const doc = iframe.contentDocument || contentWindow.document;
+            doc.open();
+            doc.write(currentApp.html);
+            doc.close();
+          }
+        }, 0);
+      }
+    }, [currentApp, isAppRunning]);
+  
   
   return (
     <div className="flex flex-col h-screen bg-gray-900 text-white">
