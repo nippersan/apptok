@@ -1,0 +1,25 @@
+{
+  "name": "apptok",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "shikasan",
+  "license": "ISC",
+  "description": "yeah",
+  "dependencies": {
+    "@types/node": "^22.13.7",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.21.0",
+    "eslint": "^9.21.0",
+    "eslint-plugin-react": "^7.37.4",
+    "globals": "^16.0.0",
+    "typescript": "^5.8.2"
+  }
+}

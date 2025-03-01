@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "jsx": "react-jsx", /* .tsxファイルに必要なJSX設定 */
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true
+  }
+}
